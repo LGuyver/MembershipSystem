@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace MembershipSystem.Models
 {
-    public class requestModel
+    public class MembershipSystemRequest
     {
-        public int Request { get; set; }
+        public string CardId { get; set; }
     }
 }

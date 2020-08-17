@@ -8,10 +8,10 @@ namespace MembershipSystem.Controllers
     [Route("[controller]")]
     public class MembershipController : Controller
     {
-        [HttpPost]
-        public ActionResult Post([FromBody] requestModel request)
+        [HttpGet]
+        public ActionResult Get([FromBody] MembershipSystemRequest request)
         {
-            if (request.Request != 0)
+            if (request.CardId != " ")
             {
                 return StatusCode((int)HttpStatusCode.OK);
             }
