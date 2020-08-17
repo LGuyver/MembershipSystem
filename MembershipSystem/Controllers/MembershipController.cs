@@ -38,10 +38,23 @@ namespace MembershipSystem.Controllers
                     Name = $"{member.FirstName} {member.LastName}",
                 };
                 return StatusCode((int)HttpStatusCode.OK,
-                    Json(new MembershipExistingReponse() { CardId = request.CardId, Member = memberDetails }));
+                    Json("Welcome", new MembershipExistingReponse() { CardId = request.CardId, Member = memberDetails }));
             }
             return StatusCode((int)HttpStatusCode.Accepted,
                 Json("Please register"));
+        }
+
+        [HttpPost]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> Post([FromBody] MembershipSignupRequest request, CancellationToken token)
+        {
+            // var newMember = MapMemberDetails(request); // this might auto map?
+            return StatusCode((int)HttpStatusCode.Accepted,
+                    Json("Please register"));
         }
     }
 }
