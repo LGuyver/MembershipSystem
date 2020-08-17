@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using MembershipSystem.Database;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -44,12 +45,14 @@ namespace MembershipSystem
 
             var connectionString = Configuration.GetValue<string>("DbConnectionString");
 
-            //services.AddDbContext<FutureContext>(options =>
-            //    options.UseSqlServer(connectionString,
-            //        sqlServerOptionsAction: sqlOptions =>
-            //        {
-            //            sqlOptions.EnableRetryOnFailure();
-            //        }));
+            services.AddDbContext<MembershipContext>(options =>
+                options.UseSqlServer(connectionString,
+                    sqlServerOptionsAction: sqlOptions =>
+                    {
+                        sqlOptions.EnableRetryOnFailure();
+                    }));
+
+            services.AddScoped<IMembershipRepository, MembershipRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
