@@ -33,9 +33,9 @@ namespace MembershipSystem.Database
             return result?.Id ?? 0;
         }
 
-        public async Task AddMemberAsync(DbMember member, CancellationToken token)
+        public async Task AddCardAndMemberAsync(DbDataCard memberCardDetails, CancellationToken token)
         {
-            await _membershipContext.Members.AddAsync(member, token).ConfigureAwait(false);
+            await _membershipContext.DataCards.AddAsync(memberCardDetails, token).ConfigureAwait(false);
             await _membershipContext.SaveChangesAsync(token).ConfigureAwait(false);
         }
     }

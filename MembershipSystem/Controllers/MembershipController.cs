@@ -38,7 +38,7 @@ namespace MembershipSystem.Controllers
                     Name = $"{member.FirstName} {member.LastName}",
                 };
                 return StatusCode((int)HttpStatusCode.OK,
-                    Json("Welcome", new MembershipExistingReponse() { CardId = request.CardId, Member = memberDetails }));
+                    Json(new MembershipExistingReponse() { CardId = request.CardId, Member = memberDetails }));
             }
             return StatusCode((int)HttpStatusCode.Accepted,
                 Json("Please register")); // fix these returns 
@@ -57,35 +57,35 @@ namespace MembershipSystem.Controllers
             {
                 return BadRequest("Company does not exist, please contact support.");
             }
-            var newMember = MapMemberDetails(request, companyId);
-            await _membershipRepository.AddMemberAsync(newMember, token).ConfigureAwait(false);
+            var newData = MapCardAndMemberDetails(request, companyId);
+            await _membershipRepository.AddCardAndMemberAsync(newData, token).ConfigureAwait(false);
 
             var memberDetails = new MemberDetails()
             {
-                Id = newMember.Id,
-                Name = $"{newMember.FirstName} {newMember.LastName}",
+                Id = newData.Member.Id,
+                Name = $"{newData.Member.FirstName} {newData.Member.LastName}",
             };
 
             return StatusCode((int)HttpStatusCode.Created,
-                    Json("Registered", new MembershipExistingReponse() { CardId = newMember.LinkedDataCard.CardId, Member = memberDetails }));
+                    Json(new MembershipExistingReponse() { CardId = newData.CardId, Member = memberDetails }));
         }
 
-        private DbMember MapMemberDetails(MembershipSignupRequest memberDetails, int companyId)
+        private DbDataCard MapCardAndMemberDetails(MembershipSignupRequest memberDetails, int companyId)
         {
-            return new DbMember
+            return new DbDataCard
             {
-                EmployeeId = memberDetails.EmployeeId,
-                FirstName = memberDetails.FirstName,
-                LastName = memberDetails.LastName,
-                Email = memberDetails.Email,
-                PhoneNumber = memberDetails.PhoneNumber,
-                SecurityPin = memberDetails.Pin,
-                CompanyId = companyId,
+                CardId = memberDetails.CardId,
                 IsLive = true,
-                LinkedDataCard = new DbDataCard
+                Member = new DbMember
                 {
-                    CardId = memberDetails.CardId,
-                    IsLive = true
+                    EmployeeId = memberDetails.EmployeeId,
+                    FirstName = memberDetails.FirstName,
+                    LastName = memberDetails.LastName,
+                    Email = memberDetails.Email,
+                    PhoneNumber = memberDetails.PhoneNumber,
+                    SecurityPin = memberDetails.Pin,
+                    CompanyId = companyId,
+                    IsLive = true,
                 }
             };
         }

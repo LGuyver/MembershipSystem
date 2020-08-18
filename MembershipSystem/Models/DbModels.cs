@@ -7,6 +7,7 @@ namespace MembershipSystem.Models
         public int MemberId { get; set; }
         public string CardId { get; set; }
         public bool IsLive { get; set; }
+        public virtual DbMember Member { get; set; }
 
     }
 
@@ -21,7 +22,6 @@ namespace MembershipSystem.Models
         public int SecurityPin { get; set; }
         public int CompanyId { get; set; }
         public bool IsLive { get; set; }
-        public virtual DbDataCard LinkedDataCard { get; set; }
     }
 
     public class DbCompany

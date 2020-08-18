@@ -10,6 +10,9 @@ namespace MembershipSystem.Database
         {
             builder.ToTable("DataCards");
             builder.HasKey(x => x.Id);
+            builder.HasOne(x => x.Member)
+                .WithOne()
+                .HasForeignKey<DbMember>(x => x.Id);
         }
     }
 
@@ -19,9 +22,6 @@ namespace MembershipSystem.Database
         {
             builder.ToTable("Members");
             builder.HasKey(x => x.Id);
-            builder.HasOne(x => x.LinkedDataCard)
-                .WithOne()
-                .HasForeignKey<DbDataCard>(x => x.MemberId);
         }
     }
 
