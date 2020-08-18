@@ -16,8 +16,14 @@ namespace MembershipSystem.Models
         public string Name { get; set; }
     }
 
-    public class MembershipExistingReponse
+    public class ResponseMessage
     {
+        public string Message { get; set; }
+    }
+
+    public class MembershipReponse
+    {
+        public string Message { get; set; }
         public string CardId { get; set; }
         public MemberDetails Member { get; set; }
     }
