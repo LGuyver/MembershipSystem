@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MembershipSystem", "MembershipSystem\MembershipSystem.csproj", "{AD3CF6CC-F30A-4C9A-8C91-BA0ED826A964}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MembershipSystem", "MembershipSystem\MembershipSystem.csproj", "{AD3CF6CC-F30A-4C9A-8C91-BA0ED826A964}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test Project", "Test Project", "{4E2AD61C-230A-4BCA-9187-9F55CC5AD125}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MembershipSystem.Test", "MembershipSystem.Test\MembershipSystem.Test.csproj", "{EB3D2C1C-71C0-4FDC-9359-43C6AB84304E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{AD3CF6CC-F30A-4C9A-8C91-BA0ED826A964}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD3CF6CC-F30A-4C9A-8C91-BA0ED826A964}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD3CF6CC-F30A-4C9A-8C91-BA0ED826A964}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB3D2C1C-71C0-4FDC-9359-43C6AB84304E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB3D2C1C-71C0-4FDC-9359-43C6AB84304E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB3D2C1C-71C0-4FDC-9359-43C6AB84304E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB3D2C1C-71C0-4FDC-9359-43C6AB84304E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EB3D2C1C-71C0-4FDC-9359-43C6AB84304E} = {4E2AD61C-230A-4BCA-9187-9F55CC5AD125}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D575E336-615A-4FF7-A0DC-020592043236}
