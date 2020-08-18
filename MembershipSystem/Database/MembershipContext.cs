@@ -9,6 +9,7 @@ namespace MembershipSystem.Database
     {
         public virtual DbSet<DbDataCard> DataCards { get; set; }
         public virtual DbSet<DbMember> Members { get; set; }
+        public virtual DbSet<DbCompany> Companies { get; set; }
 
         public MembershipContext(DbContextOptions<MembershipContext> options, IConfiguration configuration) : base(options)
         {

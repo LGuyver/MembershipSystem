@@ -9,6 +9,7 @@ namespace MembershipSystem.Database
         public void Configure(EntityTypeBuilder<DbDataCard> builder)
         {
             builder.ToTable("DataCards");
+            builder.HasKey(x => x.Id);
         }
     }
 
@@ -17,6 +18,19 @@ namespace MembershipSystem.Database
         public void Configure(EntityTypeBuilder<DbMember> builder)
         {
             builder.ToTable("Members");
+            builder.HasKey(x => x.Id);
+            builder.HasOne(x => x.LinkedDataCard)
+                .WithOne()
+                .HasForeignKey<DbDataCard>(x => x.MemberId);
+        }
+    }
+
+    internal class DbCompanyCongifuration : IEntityTypeConfiguration<DbCompany>
+    {
+        public void Configure(EntityTypeBuilder<DbCompany> builder)
+        {
+            builder.ToTable("Companies");
+            builder.HasKey(x => x.Id);
         }
     }
 }

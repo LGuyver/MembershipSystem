@@ -9,5 +9,7 @@ namespace MembershipSystem.Database
     {
         Task<int> GetDataCardMemberIdAsync(string cardId, CancellationToken token);
         Task<DbMember> GetMemberDetailsAsync(int memberId, CancellationToken token);
+        Task<int> GetCompanyIdAsync(string companyName, CancellationToken token);
+        Task AddMemberAsync(DbMember member, CancellationToken token);
     }
 }

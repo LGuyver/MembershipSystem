@@ -26,5 +26,17 @@ namespace MembershipSystem.Database
 
         public async Task<DbMember> GetMemberDetailsAsync(int memberId, CancellationToken token)
             => await _membershipContext.Members.SingleAsync(x => x.Id == memberId, token).ConfigureAwait(false);
+
+        public async Task<int> GetCompanyIdAsync(string companyName, CancellationToken token)
+        {
+            var result = await _membershipContext.Companies.SingleOrDefaultAsync(x => x.Name == companyName && x.IsLive, token).ConfigureAwait(false);
+            return result?.Id ?? 0;
+        }
+
+        public async Task AddMemberAsync(DbMember member, CancellationToken token)
+        {
+            await _membershipContext.Members.AddAsync(member, token).ConfigureAwait(false);
+            await _membershipContext.SaveChangesAsync(token).ConfigureAwait(false);
+        }
     }
 }
