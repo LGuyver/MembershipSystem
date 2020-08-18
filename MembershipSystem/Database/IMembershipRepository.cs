@@ -1,5 +1,4 @@
-﻿
-using MembershipSystem.Models;
+﻿using MembershipSystem.Models;
 using System.Threading;
 using System.Threading.Tasks;
 

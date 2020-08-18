@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿
 namespace MembershipSystem.Models
 {
     public class Mappers
@@ -26,6 +22,7 @@ namespace MembershipSystem.Models
                 }
             };
         }
+
         public (DbMember member, DbDataCard dataCard) MapUpdatedMemberDetails(MembershipSignupRequest memberDetails, int existingMemberId, int companyId)
         {
             var member = new DbMember

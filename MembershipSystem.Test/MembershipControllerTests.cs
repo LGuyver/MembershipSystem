@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Xunit;
 using Alba;
-using System;
 using Microsoft.AspNetCore.Http;
 using FluentAssertions;
 using System.Linq;
@@ -10,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using MembershipSystem.Test.Setup;
 using MembershipSystem.Database;
 using MembershipSystem.Models;
-using System.Threading;
 
 namespace MembershipSystem.Test
 {
