@@ -43,7 +43,7 @@ namespace MembershipSystem.Database
                     new Claim(ClaimTypes.Name, user.Id.ToString())
                 }),
             Expires = DateTime.UtcNow.AddMinutes(20),
-            // SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            //SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

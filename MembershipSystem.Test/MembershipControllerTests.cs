@@ -254,7 +254,7 @@ namespace MembershipSystem.Test
                     Email = "testguy@email.com",
                     PhoneNumber = "903546380124",
                     SecurityPin = 1466,
-                    CompanyId = 3,
+                    CompanyId = 1,
                     IsLive = true
                 }
             };
@@ -272,7 +272,7 @@ namespace MembershipSystem.Test
                 Email = "testguy@email.com",
                 PhoneNumber = "903546380124",
                 SecurityPin = 1466,
-                CompanyId = 3,
+                CompanyId = 1,
                 IsLive = true
             };
             _membershipContext.Members.Add(testMember);
