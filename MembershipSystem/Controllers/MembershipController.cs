@@ -1,8 +1,10 @@
 ﻿using MembershipSystem.Database;
 using MembershipSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,9 +25,11 @@ namespace MembershipSystem.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Consumes(MediaTypeNames.Application.Json)]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Get([FromBody] MembershipSystemRequest request, CancellationToken token)
         {
@@ -33,7 +37,7 @@ namespace MembershipSystem.Controllers
             if (dataCard == null)
             {
                 // The card provided does not exist and should now be sent to register for an account
-                return Ok(new MembershipReponse() { Message = "Please register", CardId = request.CardId });
+                return NotFound(new MembershipReponse() { Message = "Please register", CardId = request.CardId });
             }
 
             if (!dataCard.IsLive)
@@ -53,6 +57,7 @@ namespace MembershipSystem.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Consumes(MediaTypeNames.Application.Json)]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -70,7 +75,7 @@ namespace MembershipSystem.Controllers
             if (existingDataCard != null)
             {
                 // The card provided is already registered, member should not be registering
-                return BadRequest(new ResponseMessage() { Message = $"Member card '{request.CardId}' already exists"});
+                return Conflict(new ResponseMessage() { Message = $"Member card '{request.CardId}' already exists"});
             }
 
             var existingMember = await _membershipRepository.GetRegisteredMember(request.EmployeeId, token).ConfigureAwait(false);

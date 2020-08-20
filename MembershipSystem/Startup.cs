@@ -48,8 +48,6 @@ namespace MembershipSystem
                 opts.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
 
-            var key = Encoding.ASCII.GetBytes("secret");
-
             services.AddAuthentication(x =>
             {
                 x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -61,10 +59,9 @@ namespace MembershipSystem
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("_ASecretToBeSet_"))
                 };
             });
 
@@ -91,7 +88,7 @@ namespace MembershipSystem
             }
 
             app.UseRouting();
-            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -35,7 +35,7 @@ namespace MembershipSystem.Test
 
         [Fact]
         [Trait("Category", "Integration")]
-        public async Task Get_ShouldReturn_Ok_RegisterResponse()
+        public async Task Get_ShouldReturn_NotFound_RegisterResponse()
         {
             var result = await _system.Scenario(x =>
             {
@@ -45,7 +45,7 @@ namespace MembershipSystem.Test
                         CardId = "A65gtY2Enm14AwS0"
                     })
                     .ToUrl("/Membership");
-                x.StatusCodeShouldBe(StatusCodes.Status200OK);
+                x.StatusCodeShouldBe(StatusCodes.Status404NotFound);
             }).ConfigureAwait(false);
 
             var response = result.ResponseBody.ReadAsJson<MembershipReponse>();
@@ -142,7 +142,7 @@ namespace MembershipSystem.Test
 
         [Fact]
         [Trait("Category", "Integration")]
-        public async Task Post_ShouldReturn_BadRequest_AlreadyRegisteredResponse()
+        public async Task Post_ShouldReturn_Conflict_AlreadyRegisteredResponse()
         {
             PopulateTestData_MemberAndCard(true);
 
@@ -161,7 +161,7 @@ namespace MembershipSystem.Test
                         Pin = 1466
                     })
                     .ToUrl("/Membership");
-                x.StatusCodeShouldBe(StatusCodes.Status400BadRequest);
+                x.StatusCodeShouldBe(StatusCodes.Status409Conflict);
             }).ConfigureAwait(false);
 
             var response = result.ResponseBody.ReadAsJson<ResponseMessage>();
