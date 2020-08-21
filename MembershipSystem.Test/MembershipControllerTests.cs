@@ -9,6 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using MembershipSystem.Test.Setup;
 using MembershipSystem.Database;
 using MembershipSystem.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System;
+using System.Text;
+using System.Security.Claims;
 
 namespace MembershipSystem.Test
 {
@@ -21,6 +26,8 @@ namespace MembershipSystem.Test
             .AddJsonFile("appsettings.json")
             .Build();
 
+        private readonly string _token;
+
         public MembershipControllerTests(ApplicationFixture fixture)
         {
             _system = fixture.SystemUnderTest;
@@ -31,6 +38,24 @@ namespace MembershipSystem.Test
             optionsBuilder.UseSqlServer(connectionString);
 
             _membershipContext = new MembershipContext(optionsBuilder.Options, _config);
+
+            _token = GetToken();
+        }
+
+        [Fact]
+        [Trait("Category", "Integration")]
+        public async Task Get_ShouldReturn_UnAuthorized()
+        {
+            await _system.Scenario(x =>
+            {
+                x.Get
+                    .Json(new MembershipSystemRequest
+                    {
+                        CardId = "A65gtY2Enm14AwS0"
+                    })
+                    .ToUrl("/Membership");
+                x.StatusCodeShouldBe(StatusCodes.Status401Unauthorized);
+            }).ConfigureAwait(false);
         }
 
         [Fact]
@@ -39,6 +64,7 @@ namespace MembershipSystem.Test
         {
             var result = await _system.Scenario(x =>
             {
+                x.SetRequestHeader("Authorization", $"Bearer {_token}");
                 x.Get
                     .Json(new MembershipSystemRequest
                     {
@@ -61,6 +87,7 @@ namespace MembershipSystem.Test
             PopulateTestData_MemberAndCard(true);
             var result = await _system.Scenario(x =>
             {
+                x.SetRequestHeader("Authorization", $"Bearer {_token}");
                 x.Get
                     .Json(new MembershipSystemRequest
                     {
@@ -86,6 +113,7 @@ namespace MembershipSystem.Test
             PopulateTestData_MemberAndCard(false);
             var result = await _system.Scenario(x =>
             {
+                x.SetRequestHeader("Authorization", $"Bearer {_token}");
                 x.Get
                     .Json(new MembershipSystemRequest
                     {
@@ -107,6 +135,7 @@ namespace MembershipSystem.Test
         {
             await _system.Scenario(x =>
             {
+                x.SetRequestHeader("Authorization", $"Bearer {_token}");
                 x.Get
                     .Json(new MembershipSystemRequest
                     {
@@ -119,10 +148,34 @@ namespace MembershipSystem.Test
 
         [Fact]
         [Trait("Category", "Integration")]
+        public async Task Post_ShouldReturn_UnAuthorized()
+        {
+            await _system.Scenario(x =>
+            {
+                x.Post
+                    .Json(new MembershipSignupRequest
+                    {
+                        CardId = "74HytRR87mNJ10pl",
+                        EmployeeId = "111",
+                        FirstName = "Guy",
+                        LastName = "Test",
+                        Email = "testguy@email.com",
+                        PhoneNumber = "903546380124",
+                        Company = "Test Company",
+                        Pin = 1466
+                    })
+                    .ToUrl("/Membership");
+                x.StatusCodeShouldBe(StatusCodes.Status401Unauthorized);
+            }).ConfigureAwait(false);
+        }
+
+        [Fact]
+        [Trait("Category", "Integration")]
         public async Task Post_ShouldReturn_BadRequestResponse()
         {
             await _system.Scenario(x =>
             {
+                x.SetRequestHeader("Authorization", $"Bearer {_token}");
                 x.Post
                     .Json(new MembershipSignupRequest
                     {
@@ -148,6 +201,7 @@ namespace MembershipSystem.Test
 
             var result = await _system.Scenario(x =>
             {
+                x.SetRequestHeader("Authorization", $"Bearer {_token}");
                 x.Post
                     .Json(new MembershipSignupRequest
                     {
@@ -178,6 +232,7 @@ namespace MembershipSystem.Test
 
             var result = await _system.Scenario(x =>
             {
+                x.SetRequestHeader("Authorization", $"Bearer {_token}");
                 x.Post
                     .Json(new MembershipSignupRequest
                     {
@@ -208,6 +263,7 @@ namespace MembershipSystem.Test
         {
             var result = await _system.Scenario(x =>
             {
+                x.SetRequestHeader("Authorization", $"Bearer {_token}");
                 x.Post
                     .Json(new MembershipSignupRequest
                     {
@@ -277,6 +333,26 @@ namespace MembershipSystem.Test
             };
             _membershipContext.Members.Add(testMember);
             _membershipContext.SaveChanges();
+        }
+
+        private static string GetToken()
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("_ASecretToBeSet_"));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim("Test", 1.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddHours(12),
+                SigningCredentials = credentials
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }

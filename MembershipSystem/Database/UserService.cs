@@ -44,7 +44,7 @@ namespace MembershipSystem.Database
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(20),
+                Expires = DateTime.UtcNow.AddHours(12),
                 SigningCredentials = credentials
             };
 
