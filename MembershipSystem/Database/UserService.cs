@@ -5,7 +5,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MembershipSystem.Database
 {
@@ -33,27 +32,30 @@ namespace MembershipSystem.Database
                 return null;
             }
 
-            // found user, generate the jwt token
+            user.Token = GenerateToken(user.Id);
+            user.Password = null;
+
+            return user;
+        }
+
+        public string GenerateToken(int userId)
+        {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("_ASecretToBeSet_"));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.Name, userId.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(12),
                 SigningCredentials = credentials
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            user.Token = tokenHandler.WriteToken(token);
-
-            user.Password = null;
-
-            return user;
+            return  tokenHandler.WriteToken(token);
         }
     }
 }

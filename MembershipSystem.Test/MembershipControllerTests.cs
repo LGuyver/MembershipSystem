@@ -14,6 +14,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System;
 using System.Text;
 using System.Security.Claims;
+using FluentAssertions.Execution;
 
 namespace MembershipSystem.Test
 {
@@ -75,9 +76,12 @@ namespace MembershipSystem.Test
             }).ConfigureAwait(false);
 
             var response = result.ResponseBody.ReadAsJson<MembershipReponse>();
-            response.Message.Should().Be("Please register");
-            response.CardId.Should().Be("A65gtY2Enm14AwS0");
-            response.Member.Should().BeNull();
+            using (new AssertionScope())
+            {
+                response.Message.Should().Be("Please register");
+                response.CardId.Should().Be("A65gtY2Enm14AwS0");
+                response.Member.Should().BeNull();
+            }
         }
 
         [Fact]
@@ -98,10 +102,13 @@ namespace MembershipSystem.Test
             }).ConfigureAwait(false);
 
             var response = result.ResponseBody.ReadAsJson<MembershipReponse>();
-            response.Message.Should().Be("Welcome");
-            response.CardId.Should().Be("74HytRR87mNJ10pl");
-            response.Member.Should().NotBeNull();
-            response.Member.Name.Should().Be("Guy Test");
+            using (new AssertionScope())
+            {
+                response.Message.Should().Be("Welcome");
+                response.CardId.Should().Be("74HytRR87mNJ10pl");
+                response.Member.Should().NotBeNull();
+                response.Member.Name.Should().Be("Guy Test");
+            }
 
             CleanupCreatedData("74HytRR87mNJ10pl");
         }
@@ -250,9 +257,12 @@ namespace MembershipSystem.Test
             }).ConfigureAwait(false);
 
             var response = result.ResponseBody.ReadAsJson<MembershipReponse>();
-            response.Message.Should().Be("Linked card to existing member");
-            response.CardId.Should().Be("Aa65egw4uywGE3ty");
-            response.Member.Name.Should().Be("Guy Test");
+            using (new AssertionScope())
+            {
+                response.Message.Should().Be("Linked card to existing member");
+                response.CardId.Should().Be("Aa65egw4uywGE3ty");
+                response.Member.Name.Should().Be("Guy Test");
+            }
 
             CleanupCreatedData("Aa65egw4uywGE3ty");
         }
@@ -281,9 +291,12 @@ namespace MembershipSystem.Test
             }).ConfigureAwait(false);
 
             var response = result.ResponseBody.ReadAsJson<MembershipReponse>();
-            response.Message.Should().Be("Registered");
-            response.CardId.Should().Be("Aa65egw4uywGE3ty");
-            response.Member.Name.Should().Be("Guy Test");
+            using (new AssertionScope())
+            {
+                response.Message.Should().Be("Registered");
+                response.CardId.Should().Be("Aa65egw4uywGE3ty");
+                response.Member.Name.Should().Be("Guy Test");
+            }
 
             CleanupCreatedData("Aa65egw4uywGE3ty");
         }
