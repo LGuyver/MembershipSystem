@@ -37,7 +37,7 @@ namespace MembershipSystem.Test
             var optionsBuilder = new DbContextOptionsBuilder<MembershipContext>();
             optionsBuilder.UseSqlServer(connectionString);
 
-            _membershipContext = new MembershipContext(optionsBuilder.Options, _config);
+            _membershipContext = new MembershipContext(optionsBuilder.Options);
 
             _token = GetToken();
         }
@@ -139,7 +139,7 @@ namespace MembershipSystem.Test
                 x.Get
                     .Json(new MembershipSystemRequest
                     {
-                        CardId = "74HytRR87mNJ10pl235"
+                        CardId = "1234"
                     })
                     .ToUrl("/Membership");
                 x.StatusCodeShouldBe(StatusCodes.Status400BadRequest);

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
-using System.Threading.Tasks;
-using MembershipSystem.Database;
+﻿using MembershipSystem.Database;
 using MembershipSystem.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace MembershipSystem.Controllers
@@ -21,7 +15,7 @@ namespace MembershipSystem.Controllers
     [Route("[controller]")]
     public class UserController : Controller
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
 
         public UserController(IUserService userService)
         {
