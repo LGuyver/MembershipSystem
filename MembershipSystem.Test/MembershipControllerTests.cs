@@ -9,11 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using MembershipSystem.Test.Setup;
 using MembershipSystem.Database;
 using MembershipSystem.Models;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System;
-using System.Text;
-using System.Security.Claims;
 using FluentAssertions.Execution;
 
 namespace MembershipSystem.Test
@@ -28,6 +23,7 @@ namespace MembershipSystem.Test
             .Build();
 
         private readonly string _token;
+        private readonly IUserService _userServie = new UserService();
 
         public MembershipControllerTests(ApplicationFixture fixture)
         {
@@ -40,7 +36,7 @@ namespace MembershipSystem.Test
 
             _membershipContext = new MembershipContext(optionsBuilder.Options);
 
-            _token = GetToken();
+            _token = _userServie.GenerateToken(1);
         }
 
         [Fact]
@@ -131,7 +127,7 @@ namespace MembershipSystem.Test
             }).ConfigureAwait(false);
 
             var response = result.ResponseBody.ReadAsJson<ResponseMessage>();
-            response.Message.Should().Be("Member card '74HytRR87mNJ10pl' should not be in use, please contact support");
+            response.Message.Should().Be("Member card should not be in use. Please contact support");
 
             CleanupCreatedData("74HytRR87mNJ10pl");
         }
@@ -226,7 +222,7 @@ namespace MembershipSystem.Test
             }).ConfigureAwait(false);
 
             var response = result.ResponseBody.ReadAsJson<ResponseMessage>();
-            response.Message.Should().Be("Member card '74HytRR87mNJ10pl' already exists");
+            response.Message.Should().Be("Member card already exists");
 
             CleanupCreatedData("74HytRR87mNJ10pl");
         }
@@ -346,26 +342,6 @@ namespace MembershipSystem.Test
             };
             _membershipContext.Members.Add(testMember);
             _membershipContext.SaveChanges();
-        }
-
-        private static string GetToken()
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("_ASecretToBeSet_"));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim("Test", 1.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddHours(12),
-                SigningCredentials = credentials
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
         }
     }
 }

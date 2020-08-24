@@ -77,6 +77,7 @@ namespace MembershipSystem
             services.AddScoped<IMembershipRepository, MembershipRepository>();
             services.AddScoped<Mappers, Mappers>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<MembershipService, MembershipService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
