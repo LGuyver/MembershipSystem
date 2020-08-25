@@ -10,6 +10,7 @@ using MembershipSystem.Test.Setup;
 using MembershipSystem.Database;
 using MembershipSystem.Models;
 using FluentAssertions.Execution;
+using MembershipSystem.Services;
 
 namespace MembershipSystem.Test
 {

@@ -1,6 +1,5 @@
-﻿using MembershipSystem.Database;
-using MembershipSystem.Models;
-
+﻿using MembershipSystem.Models;
+using MembershipSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MembershipSystem.Controllers

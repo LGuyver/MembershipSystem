@@ -1,6 +1,7 @@
 using FluentValidation.AspNetCore;
 using MembershipSystem.Database;
 using MembershipSystem.Models;
+using MembershipSystem.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -77,7 +78,7 @@ namespace MembershipSystem
             services.AddScoped<IMembershipRepository, MembershipRepository>();
             services.AddScoped<Mappers, Mappers>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<MembershipService, MembershipService>();
+            services.AddScoped<IMembershipService, MembershipService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,9 +1,9 @@
 ﻿using Xunit;
 using FluentAssertions;
-using MembershipSystem.Database;
 using System.IdentityModel.Tokens.Jwt;
 using System;
 using FluentAssertions.Execution;
+using MembershipSystem.Services;
 
 namespace MembershipSystem.Test
 {

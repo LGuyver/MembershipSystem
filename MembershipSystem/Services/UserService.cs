@@ -6,7 +6,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
-namespace MembershipSystem.Database
+namespace MembershipSystem.Services
 {
     public class User
     {

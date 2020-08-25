@@ -1,5 +1,5 @@
 ﻿
-namespace MembershipSystem.Database
+namespace MembershipSystem.Services
 {
     public interface IUserService
     {
